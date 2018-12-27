@@ -15,6 +15,14 @@ class Restaurant(Base):
    #example attributes: string, integer, relationship, nullable. primary_key, foreignkey..
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'name': self.name,
+            'id': self.id,
+        }
  
 class MenuItem(Base):
     __tablename__ = 'menu_item'
@@ -27,7 +35,16 @@ class MenuItem(Base):
     restaurant_id = Column(Integer,ForeignKey('restaurant.id'))
     restaurant = relationship(Restaurant) 
  
-
+    @property
+    def serialize(self):
+        #Returns object data in serializable format
+        return {
+            'name' : self.name,
+            'description' : self.description,
+            'id' : self.id,
+            'price' : self.price,
+            'course' : self.course
+        }
 #instance to point to DB that we will use
 engine = create_engine('sqlite:///restaurantmenu.db')
 #adds classes to db as new tables
